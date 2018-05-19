@@ -1,0 +1,21 @@
+.catalog:
+  name: Simple Demo
+  description: |
+    Simple Catalog Demo
+  version: 0.1
+  minimum_rancher_version: v1.0.0
+  maintainer: "wzh <zhihong.wu@e-vada.com>"
+  questions:
+    - variable: "ext_port"
+      description: |
+        External Port
+      label: "Nginx External Port:"
+      default: "20080"
+      required: true
+      type: "int"
+
+version: '2'
+services:
+  nginx:
+    scale: 1
+    start_on_create: true
