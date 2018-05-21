@@ -5,6 +5,8 @@ services:
     restart: always
     ports:
       - "13002:3306"
+    labels:
+      io.rancher.scheduler.affinity:container: jenkins-master
   jenkins-master:
     image: "${REGISTRY_PREFIX}myjenkins:20180517"
     restart: always
@@ -20,6 +22,8 @@ services:
       - SLAVE_NODE_NAME=Node-1
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      io.rancher.scheduler.affinity:container: jenkins-master
   cicd-backend:
     image: "${REGISTRY_PREFIX}mycicd:latest"
     command: ["cicd","-mock"]
@@ -37,6 +41,7 @@ services:
       - DB_HOST=database
       - DB_PORT=3306
     labels:
+      io.rancher.scheduler.affinity:container: jenkins-master
       io.rancher.container.create_agent: true
       io.rancher.container.agent.role: environmentAdmin
       
