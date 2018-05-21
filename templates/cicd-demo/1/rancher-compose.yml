@@ -1,0 +1,77 @@
+.catalog:
+  name: "Asean CI/CD Demo"
+  version: "v0.2.1-dev"
+  description: "Deploy Asean CI/CD Demo the easy way"
+  questions:
+  - variable: "RANCHER_SERVER_IP"
+    label: "Rancher Server IP"
+    description: "IP Address of the rancher server, no HTTP or slashes. This is only required for users that have enabled metrics to be exported by Rancher"
+    default: "0.0.0.0"
+    required: true
+    type: "string"
+  - variable: "RANCHER_SERVER_PORT"
+    label: "Rancher Server PORT"
+    default: "8080"
+    required: true
+    type: "string"
+  - variable: "ALERT_IP"
+    label: "Alert IP Address"
+    default: ""
+    required: true
+    type: "string"
+  - variable: "ALERT_PORT"
+    label: "Alert Port"
+    default: "8888"
+    required: true
+    type: "string"
+  - variable: "HARBOR_IP"
+    label: "Harbor IP Address"
+    default: ""
+    required: true
+    type: "string"
+  - variable: "HARBOR_PORT"
+    label: "Harbor Port"
+    default: "80"
+    required: true
+    type: "string"
+  - variable: "KIBANA_URL"
+    label: "Kibana URL"
+    description: " URL that link to Your native kibana ui"
+    required: true
+    type: "string"
+  - variable: "GRAFANA_URL"
+    label: "Grafana Url"
+    description: " URL that link to Your native grafana ui"
+    required: true
+    type: "string"
+  - variable: "REGISTRY_PREFIX"
+    label: "registry prefix"
+    default: "registry.cn-hangzhou.aliyuncs.com/zhongweixiao/"
+    description: "Image registry prefix, end with /, can be empty"
+    required: false
+    type: "string"
+
+asean-ui:
+  scale: 1
+  start_on_create: true
+  metadata:
+    rancher_ip: ${RANCHER_SERVER_IP}
+    rancher_port: ${RANCHER_SERVER_PORT}
+    alert_ip: ${ALERT_IP}
+    alert_port: ${ALERT_PORT}
+    harbor_ip: ${HARBOR_IP}
+    harbor_port: ${HARBOR_PORT}
+    grafana_url: ${GRAFANA_URL}
+    kibana_url: ${KIBANA_URL}
+database:
+  scale: 1
+  start_on_create: true
+jenkins-master:
+  scale: 1
+  start_on_create: true
+jenkins-slave-1:
+  scale: 1
+  start_on_create: true
+cicd-backend:
+  scale: 1
+  start_on_create: true
