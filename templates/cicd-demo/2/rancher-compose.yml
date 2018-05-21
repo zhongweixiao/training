@@ -9,6 +9,12 @@
     description: "Image registry prefix, end with /, can be empty"
     required: false
     type: "string"
+  - variable: "HOST_LABEL"
+    label: "host label"
+    default: ""
+    description: "Host label"
+    required: true
+    type: "string"
 
 database:
   scale: 1

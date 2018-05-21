@@ -6,12 +6,14 @@ services:
     ports:
       - "13002:3306"
     labels:
-      io.rancher.scheduler.affinity:container: jenkins-master
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
   jenkins-master:
     image: "${REGISTRY_PREFIX}myjenkins:20180517"
     restart: always
     ports:
       - "13003:8080"
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
   jenkins-slave-1:
     image: "${REGISTRY_PREFIX}myjenkins-slave:latest"
     restart: always
@@ -23,7 +25,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
-      io.rancher.scheduler.affinity:container: jenkins-master
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
   cicd-backend:
     image: "${REGISTRY_PREFIX}mycicd:latest"
     command: ["cicd","-mock"]
@@ -41,7 +43,7 @@ services:
       - DB_HOST=database
       - DB_PORT=3306
     labels:
-      io.rancher.scheduler.affinity:container: jenkins-master
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
       io.rancher.container.create_agent: true
       io.rancher.container.agent.role: environmentAdmin
       
