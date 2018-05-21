@@ -1,0 +1,11 @@
+version: '2'
+services:
+  asean-ui:
+    tty: true
+    stdin_open: true
+    image: ${REGISTRY_PREFIX}asean-ui:v0.2.1-dev
+    ports:
+      - 3001:3001
+    labels:
+      io.rancher.container.pull_image: always
+      
