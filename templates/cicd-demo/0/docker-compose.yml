@@ -1,0 +1,49 @@
+version: '2'
+services:
+  asean-ui:
+    tty: true
+    stdin_open: true
+    image: registry.cn-hangzhou.aliyuncs.com/zhongweixiao/asean-ui:v0.2.0-dev
+    ports:
+      - 13001:3001
+    labels:
+      io.rancher.container.pull_image: always
+  database:
+    image: "registry.cn-hangzhou.aliyuncs.com/zhongweixiao/mymysql:latest"
+    restart: always
+    ports:
+      - "13002:3306"
+  jenkins-master:
+    image: "registry.cn-hangzhou.aliyuncs.com/zhongweixiao/myjenkins:20180517"
+    restart: always
+    ports:
+      - "13003:8080"
+  jenkins-slave-1:
+    image: "registry.cn-hangzhou.aliyuncs.com/zhongweixiao/myjenkins-slave:latest"
+    restart: always
+    links:
+      - jenkins-master
+    environment:
+      - JENKINS_MASTER_URL=http://jenkins-master:8080
+      - SLAVE_NODE_NAME=Node-1
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+  cicd-backend:
+    image: "registry.cn-hangzhou.aliyuncs.com/zhongweixiao/mycicd:latest"
+    restart: always
+    ports:
+      - "13004:60080"
+    links:
+      - jenkins-master
+      - database
+    environment:
+      - JENKINS_ADDRESS=http://jenkins-master:8080
+      - JENKINS_USER=admin
+      - SERVER_URL=http://cicd-backend
+      - PORT=60080
+      - DB_HOST=database
+      - DB_PORT=3306
+    labels:
+      io.rancher.container.create_agent: true
+      io.rancher.container.agent.role: environmentAdmin
+      
