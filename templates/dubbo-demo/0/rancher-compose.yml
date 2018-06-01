@@ -1,0 +1,27 @@
+.catalog:
+  name: Dubbo Demo
+  description: |
+    Dubbo Demo
+  version: 0.1
+  minimum_rancher_version: v1.0.0
+  maintainer: "wzh <zhihong.wu@e-vada.com>"
+  questions:
+    - variable: "ext_port"
+      description: |
+        External Port
+      label: "Dubbo External Port:"
+      default: "8899"
+      required: true
+      type: "int"
+
+version: '2'
+services:
+  zookeeper:
+    scale: 1
+    start_on_create: true
+  producer:
+    scale: 1
+    start_on_create: true
+  consumer:
+    scale: 1
+    start_on_create: true

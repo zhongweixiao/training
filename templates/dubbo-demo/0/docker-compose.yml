@@ -1,0 +1,16 @@
+version: "2"
+services:
+  zookeeper:
+    image: 'registry.aliyuncs.com/acs-sample/zookeeper:3.4.8'
+    hostname: zookeeper
+  producer:
+    image: 'registry.cn-hangzhou.aliyuncs.com/zhongweixiao/dubbo-producer:20180601'
+    environment:
+      - ZOOKEEPER_SERVER=zookeeper
+  consumer:
+    image: 'registry.cn-hangzhou.aliyuncs.com/zhongweixiao/dubbo-consumer:20180601'
+    environment:
+      - ZOOKEEPER_SERVER=zookeeper
+      - SERVER_PORT=8899
+    ports:
+      - $ext_port:8899
