@@ -1,6 +1,6 @@
 .catalog:
   name: "Asean UI"
-  version: "v0.2.1-dev"
+  version: "v0.4-dev-20180611"
   description: "Deploy Asean UI the easy way"
   questions:
   - variable: "RANCHER_SERVER_IP"
