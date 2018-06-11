@@ -7,8 +7,8 @@ services:
       - "13002:3306"
     volumes:
       - "cicd-database:/var/lib/mysql"
-    labels:
   {{- if ne .Values.HOST_LABEL "" }}
+    labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
   {{- end }}
   jenkins-master:
@@ -16,8 +16,8 @@ services:
     restart: always
     ports:
       - "13003:8080"
-    labels:
   {{- if ne .Values.HOST_LABEL "" }}
+    labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
   {{- end }}
   jenkins-slave-1:
@@ -30,8 +30,8 @@ services:
       - SLAVE_NODE_NAME=Node-1
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-    labels:
   {{- if ne .Values.HOST_LABEL "" }}
+    labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
   {{- end }}
   cicd-backend:
