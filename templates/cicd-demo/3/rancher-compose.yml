@@ -1,0 +1,30 @@
+.catalog:
+  name: "Asean CI/CD Demo"
+  version: "v0.4.0-dev"
+  description: "Deploy Asean CI/CD Demo the easy way"
+  questions:
+  - variable: "REGISTRY_PREFIX"
+    label: "registry prefix"
+    default: "registry.cn-hangzhou.aliyuncs.com/zhongweixiao/"
+    description: "Image registry prefix, end with /, can be empty"
+    required: false
+    type: "string"
+  - variable: "HOST_LABEL"
+    label: "host label"
+    default: ""
+    description: "Host label"
+    required: false
+    type: "string"
+
+database:
+  scale: 1
+  start_on_create: true
+jenkins-master:
+  scale: 1
+  start_on_create: true
+jenkins-slave-1:
+  scale: 1
+  start_on_create: true
+cicd-backend:
+  scale: 1
+  start_on_create: true
