@@ -1,0 +1,212 @@
+version: '2'
+services:
+  product:
+    image: durianman/product:latest
+    hostname: product
+    environment:
+      CONFIG_PROFILE: latest
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - db:db
+  common:
+    image: durianman/common:latest
+    hostname: common
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - db:db
+  order:
+    image: durianman/order:latest
+    hostname: order
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - payment:payment
+    - esimbusic:esimbusic
+    - db:db
+  payment:
+    image: durianman/payment:latest
+    hostname: payment
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+    DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - order:order
+    - db:db
+  esimbusic:
+    image: durianman/esimbusic:latest
+    hostname: esimbusic
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - order:order
+    - payment:payment
+    - account:account
+    - db:db
+  icrm:
+    image: durianman/icrm:latest
+    hostname: icrm
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - db:db
+    labels:
+      io.rancher.container.pull_image: always
+  discovery:
+    image: durianman/discovery:latest
+    hostname: discovery
+    links:
+    - db:db
+    ports:
+    - 1111:1111/tcp
+  opuser:
+image: durianman/opuser:latest
+    hostname: opuser
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - db:db
+  gateway-lb:
+    image: rancher/lb-service-haproxy:v0.7.15
+    ports:
+    - 3000:3000/tcp
+    labels:
+      io.rancher.container.agent.role: environmentAdmin,agent
+      io.rancher.container.agent_service.drain_provider: 'true'
+      io.rancher.container.create_agent: 'true'
+  config:
+    image: durianman/config:latest
+    hostname: config
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+  DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+    links:
+    - discovery:discovery
+    - db:db
+  db:
+    image: allblue/percona:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: dxrd@2017
+    stdin_open: true
+    volumes:
+    - /var/lib/mysql:/var/lib/mysql
+    tty: true
+    ports:
+    - 13306:3306/tcp
+  db-init:
+    image: durianman/mysql-data-import:v0.1.0
+    environment:
+ MYSQL_ROOT_PASSWORD: dxrd@2017
+      DST_MYSQL_HOST: db
+    links:
+      - db:db
+    stdin_open: true
+    tty: true
+    labels:
+      io.rancher.container.start_once: true
+  account:
+    image: durianman/account:latest
+    hostname: account
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+ EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - common:common
+    - config:config
+    - discovery:discovery
+    - db:db
+  gateway:
+    image: durianman/gateway:latest
+    hostname: gateway
+    environment:
+      CONFIG_PROFILE: stable
+      DB_PASSWORD: dxrd@2017
+      DB_PORT: '3306'
+      DB_URL: db
+      DB_USERNAME: root
+      EUREKA_HOST: discovery
+      EUREKA_PORT: '1111'
+      SPRING_PROFILES_ACTIVE: docker
+    links:
+    - config:config
+    - discovery:discovery
+    - account:account
+    - product:product
+    - opuser:opuser
+    - db:db
+    - icrm:icrm
+    - common:common
+    - order:order
+    - esimbusic:esimbusic
