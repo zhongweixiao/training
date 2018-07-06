@@ -22,7 +22,7 @@ services:
     environment:
       CONFIG_PROFILE: stable
       DB_PASSWORD: dxrd@2017
-DB_PORT: '3306'
+      DB_PORT: '3306'
       DB_URL: db
       DB_USERNAME: root
       EUREKA_HOST: discovery
@@ -57,7 +57,7 @@ DB_PORT: '3306'
       CONFIG_PROFILE: stable
       DB_PASSWORD: dxrd@2017
       DB_PORT: '3306'
-    DB_URL: db
+      DB_URL: db
       DB_USERNAME: root
       EUREKA_HOST: discovery
       EUREKA_PORT: '1111'
