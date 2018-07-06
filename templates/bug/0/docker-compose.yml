@@ -143,7 +143,7 @@ image: durianman/opuser:latest
       DB_PASSWORD: dxrd@2017
       DB_PORT: '3306'
       DB_URL: db
-  DB_USERNAME: root
+      DB_USERNAME: root
       EUREKA_HOST: discovery
       EUREKA_PORT: '1111'
     links:
@@ -162,7 +162,7 @@ image: durianman/opuser:latest
   db-init:
     image: durianman/mysql-data-import:v0.1.0
     environment:
- MYSQL_ROOT_PASSWORD: dxrd@2017
+      MYSQL_ROOT_PASSWORD: dxrd@2017
       DST_MYSQL_HOST: db
     links:
       - db:db
