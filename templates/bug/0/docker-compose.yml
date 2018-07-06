@@ -112,7 +112,7 @@ services:
     ports:
     - 1111:1111/tcp
   opuser:
-image: durianman/opuser:latest
+    image: durianman/opuser:latest
     hostname: opuser
     environment:
       CONFIG_PROFILE: stable
@@ -180,7 +180,7 @@ image: durianman/opuser:latest
       DB_URL: db
       DB_USERNAME: root
       EUREKA_HOST: discovery
- EUREKA_PORT: '1111'
+      EUREKA_PORT: '1111'
       SPRING_PROFILES_ACTIVE: docker
     links:
     - common:common
