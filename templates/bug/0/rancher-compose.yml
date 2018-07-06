@@ -1,8 +1,8 @@
 version: '2'
 .catalog:
-  name: "liulian"
+  name: "\u69b4\u83b2\u4fa0"
   version: "llxia-latest-0209"
-  description: "liulian"
+  description: "榴莲侠后端应用(生产环境)"
   questions:
     - variable: "expose_gateway_port"
       description: "expose lb port."
